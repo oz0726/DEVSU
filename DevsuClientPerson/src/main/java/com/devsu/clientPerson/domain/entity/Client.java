@@ -19,7 +19,6 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "CLIENT")
-@NamedQuery(name = "Client.findAll", query = "SELECT c FROM Client c")
 @Generated
 public @Getter @Setter class Client {
     @Id

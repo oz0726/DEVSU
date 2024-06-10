@@ -20,5 +20,5 @@ public class ClientRequest {
     private String phoneNumber;
     private int idNumber;
     private String password;
-    private int state;
+    private boolean state;
 }

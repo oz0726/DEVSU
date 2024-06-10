@@ -19,5 +19,5 @@ public class ClientResponse {
     private String address;
     private String phoneNumber;
     private int idNumber;
-    private String state;
+    private boolean state;
 }

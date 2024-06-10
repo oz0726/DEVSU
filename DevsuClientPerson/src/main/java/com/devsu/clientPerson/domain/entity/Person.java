@@ -14,11 +14,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "PERSON")
-@NamedQuery(name = "Person.findAll", query = "SELECT p FROM Person p")
 @Generated
 public @Getter @Setter class Person {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Column(name = "NAME")
