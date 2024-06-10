@@ -36,8 +36,9 @@ public class ClientController {
         return ResponseEntity.ok("Entidad creada con éxito");
     }
 
-    @PutMapping("/clientes/")
-    public ResponseEntity<String> updateClient(@RequestBody ClientRequest clientRequest) throws IOException {
+    @RequestMapping(value = "clientes", method = RequestMethod.PATCH)
+    @ResponseBody
+    public ResponseEntity<?> updateClient(@RequestBody ClientRequest clientRequest) throws IOException {
         service.updateClient(clientRequest);
         return ResponseEntity.ok("Entidad creada con éxito");
     }

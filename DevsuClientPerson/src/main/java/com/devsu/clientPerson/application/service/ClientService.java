@@ -3,6 +3,7 @@ package com.devsu.clientPerson.application.service;
 import com.devsu.clientPerson.domain.entity.Client;
 import com.devsu.clientPerson.domain.entity.Person;
 import com.devsu.clientPerson.domain.repository.IClientRepository;
+import com.devsu.clientPerson.domain.repository.IPersonRepository;
 import com.devsu.clientPerson.infrastructure.vo.ClientRequest;
 import com.devsu.clientPerson.infrastructure.vo.ClientResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class ClientService {
     @Autowired
     IClientRepository clientRepository;
+    @Autowired
+    IPersonRepository personRepository;
 
     public List<ClientResponse> getAllClients(){
         List<ClientResponse> clients=new ArrayList<ClientResponse>();
@@ -65,6 +68,7 @@ public class ClientService {
         person.setId(clientRequest.getIdNumber());
         person.setName(clientRequest.getName());
         person.setPhoneNumber(clientRequest.getPhoneNumber());
+        personRepository.save(person);
         client.setState(clientRequest.isState()? 1 : 0);
         client.setPassword(clientRequest.getPassword());
         client.setPerson(person);
@@ -74,29 +78,27 @@ public class ClientService {
     public void updateClient(ClientRequest clientRequest){
         List<Client> clientList= clientRepository.findByPersonId(clientRequest.getIdNumber());
         Client client= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
-        Person newPerson= new Person();
 
         Optional.ofNullable(clientRequest.getAddress())
                 .filter(address -> !address.trim().isEmpty())
-                .ifPresent(newPerson::setAddress);
+                .ifPresent(client.getPerson()::setAddress);
         Optional.ofNullable(clientRequest.getAge())
                 .filter(age -> !age.trim().isEmpty())
-                .ifPresent(newPerson::setAge);
+                .ifPresent(client.getPerson()::setAge);
         Optional.ofNullable(clientRequest.getGenre())
                 .filter(genre -> !genre.trim().isEmpty())
-                .ifPresent(newPerson::setGenre);
+                .ifPresent(client.getPerson()::setGenre);
         Optional.ofNullable(clientRequest.getName())
                 .filter(name -> !name.trim().isEmpty())
-                .ifPresent(newPerson::setName);
+                .ifPresent(client.getPerson()::setName);
         Optional.ofNullable(clientRequest.getPhoneNumber())
                 .filter(phoneNumber -> !phoneNumber.trim().isEmpty())
-                .ifPresent(newPerson::setPhoneNumber);
+                .ifPresent(client.getPerson()::setPhoneNumber);
         Optional.ofNullable(clientRequest.getPassword())
                 .filter(password -> !password.trim().isEmpty())
                 .ifPresent(client::setPassword);
 
         client.setState(clientRequest.isState()? 1 : 0);
-        client.setPerson(newPerson);
 
         clientRepository.save(client);
     }
