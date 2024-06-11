@@ -5,7 +5,6 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -21,9 +20,11 @@ public @Getter @Setter class Operation {
     @Column(name = "OPERATION_TYPE")
     private String operationType;
     @Column(name = "OPERATION_VALUE")
-    private BigInteger operationValue;
+    private Long operationValue;
     @Column(name = "NEW_BALANCE")
-    private BigInteger newBalance;
+    private Long newBalance;
+    @Column(name = "STATE")
+    private boolean state;
     @JoinColumn(name = "ACCOUNT", referencedColumnName = "ACCOUNT_NUMBER", nullable = false)
     @ManyToOne(optional = false, cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Account account;

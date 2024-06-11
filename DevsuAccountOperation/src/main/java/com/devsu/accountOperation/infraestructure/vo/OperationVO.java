@@ -4,7 +4,6 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
 import java.util.Date;
 
 
@@ -16,10 +15,12 @@ import java.util.Date;
  *
  * @author Olman Ibanez
  */
-public class OperationRequest {
+public class OperationVO {
+    private int operationId;
     private Date operationDate;
     private String operationType;
-    private BigInteger operationValue;
-    private BigInteger newBalance;
+    private Long operationValue;
+    private Long newBalance;
+    private boolean state;
     private int accountNumber;
 }

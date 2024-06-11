@@ -4,10 +4,6 @@ import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigInteger;
-import java.util.Date;
-
-
 @Generated
 @Getter
 @Setter
@@ -16,11 +12,10 @@ import java.util.Date;
  *
  * @author Olman Ibanez
  */
-public class OperationResponse {
-    private int operationId;
-    private Date operationDate;
-    private String operationType;
-    private BigInteger operationValue;
-    private BigInteger newBalance;
+public class AccountVO {
     private int accountNumber;
+    private String accountType;
+    private Long initialBalance;
+    private boolean state;
+    private int clientId;
 }

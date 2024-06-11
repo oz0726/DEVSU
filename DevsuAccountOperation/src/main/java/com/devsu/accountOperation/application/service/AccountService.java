@@ -1,12 +1,12 @@
 package com.devsu.accountOperation.application.service;
 
-import com.devsu.accountOperation.domain.entity.Account;
 import com.devsu.accountOperation.domain.repository.IAccountRepository;
+import com.devsu.accountOperation.infraestructure.vo.AccountVO;
+import com.devsu.accountOperation.domain.entity.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,31 +16,31 @@ public class AccountService {
     @Autowired
     IAccountRepository repository;
 
-    public List<com.devsu.accountOperation.infraestructure.vo.Account> getAllAccounts(){
-        List<com.devsu.accountOperation.infraestructure.vo.Account> accounts= new ArrayList<>();
+    public List<AccountVO> getAllAccounts(){
+        List<AccountVO> accountVOS = new ArrayList<>();
         List<Account> accountsDB= repository.findAll();
         accountsDB.forEach(i -> {
-            com.devsu.accountOperation.infraestructure.vo.Account account=new com.devsu.accountOperation.infraestructure.vo.Account();
-            account.setAccountNumber(i.getAccountNumber());
-            account.setAccountType(i.getAccountType());
-            account.setState(i.isState());
-            account.setClientId(i.getClientId());
-            account.setInitialBalance(i.getInitialBalance());
-            accounts.add(account);
+            AccountVO accountVO =new AccountVO();
+            accountVO.setAccountNumber(i.getAccountNumber());
+            accountVO.setAccountType(i.getAccountType());
+            accountVO.setState(i.isState());
+            accountVO.setClientId(i.getClientId());
+            accountVO.setInitialBalance(i.getInitialBalance());
+            accountVOS.add(accountVO);
         });
-        return accounts;
+        return accountVOS;
     }
 
-    public com.devsu.accountOperation.infraestructure.vo.Account getAccountById(Integer id){
+    public AccountVO getAccountById(Integer id){
         Optional<Account> accountDB=repository.findById(id);
         if (accountDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
-        com.devsu.accountOperation.infraestructure.vo.Account account=new com.devsu.accountOperation.infraestructure.vo.Account();
-        account.setAccountNumber(accountDB.get().getAccountNumber());
-        account.setAccountType(accountDB.get().getAccountType());
-        account.setState(accountDB.get().isState());
-        account.setClientId(accountDB.get().getClientId());
-        account.setInitialBalance(accountDB.get().getInitialBalance());
-        return account;
+        AccountVO accountVO =new AccountVO();
+        accountVO.setAccountNumber(accountDB.get().getAccountNumber());
+        accountVO.setAccountType(accountDB.get().getAccountType());
+        accountVO.setState(accountDB.get().isState());
+        accountVO.setClientId(accountDB.get().getClientId());
+        accountVO.setInitialBalance(accountDB.get().getInitialBalance());
+        return accountVO;
     }
 
     public void deleteAccount(Integer id){
@@ -50,31 +50,33 @@ public class AccountService {
         repository.save(accountDB.get());
     }
 
-    public void createAccount(com.devsu.accountOperation.infraestructure.vo.Account accountRequest){
+    public void createAccount(AccountVO accountVORequest){
         Account account= new Account();
-        account.setAccountNumber(accountRequest.getAccountNumber());
-        account.setAccountType(accountRequest.getAccountType());
-        account.setState(accountRequest.isState());
-        account.setClientId(accountRequest.getClientId());
-        account.setInitialBalance(accountRequest.getInitialBalance());
+        account.setAccountNumber(accountVORequest.getAccountNumber());
+        account.setAccountType(accountVORequest.getAccountType());
+        account.setState(true);
+        account.setClientId(accountVORequest.getClientId());
+        account.setInitialBalance(accountVORequest.getInitialBalance());
         repository.save(account);
+        //TO DO validar si el cliente existe
     }
 
-    public void updateAccount(com.devsu.accountOperation.infraestructure.vo.Account accountRequest){
-        Optional<Account> accountDB=repository.findById(accountRequest.getAccountNumber());
+    public void updateAccount(AccountVO accountVORequest){
+        Optional<Account> accountDB=repository.findById(accountVORequest.getAccountNumber());
         if (accountDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
 
-        Optional.ofNullable(accountRequest.getAccountType())
+        Optional.ofNullable(accountVORequest.getAccountType())
                 .filter(accountType -> !accountType.trim().isEmpty())
                 .ifPresent(accountDB.get()::setAccountType);
-        Optional.of(accountRequest.getClientId())
-                .filter(initialBalance -> initialBalance!=0)
+        Optional.of(accountVORequest.getClientId())
+                .filter(clientId -> clientId !=0)
                 .ifPresent(accountDB.get()::setClientId);
-        Optional.ofNullable(accountRequest.getInitialBalance())
-                .filter(initialBalance -> initialBalance.compareTo(BigInteger.ZERO) >= 0)
+        Optional.ofNullable(accountVORequest.getInitialBalance())
+                .filter(initialBalance -> initialBalance>= 0)
                 .ifPresent(accountDB.get()::setInitialBalance);
-        accountDB.get().setState(accountRequest.isState());
+        accountDB.get().setState(true);
 
         repository.save(accountDB.get());
+        //TO DO validar si el cliente existe
     }
 }
