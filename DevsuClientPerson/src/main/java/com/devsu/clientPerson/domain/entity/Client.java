@@ -16,7 +16,7 @@ public @Getter @Setter class Client {
     @Column(name = "ID", nullable = false)
     private Integer id;
     @Column(name = "STATE")
-    private Integer state;
+    private Boolean state;
     @Column(name = "PASSWORD")
     private String password;
     @JoinColumn(name = "PERSON", referencedColumnName = "ID", nullable = false)

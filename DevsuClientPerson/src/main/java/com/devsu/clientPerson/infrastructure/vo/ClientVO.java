@@ -12,13 +12,13 @@ import lombok.Setter;
  *
  * @author Olman Ibanez
  */
-public class ClientRequest {
+public class ClientVO {
     private String name;
     private String genre;
     private String age;
     private String address;
     private String phoneNumber;
-    private int idNumber;
     private String password;
+    private int idNumber;
     private boolean state;
 }

@@ -4,8 +4,7 @@ import com.devsu.clientPerson.domain.entity.Client;
 import com.devsu.clientPerson.domain.entity.Person;
 import com.devsu.clientPerson.domain.repository.IClientRepository;
 import com.devsu.clientPerson.domain.repository.IPersonRepository;
-import com.devsu.clientPerson.infrastructure.vo.ClientRequest;
-import com.devsu.clientPerson.infrastructure.vo.ClientResponse;
+import com.devsu.clientPerson.infrastructure.vo.ClientVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,45 +20,45 @@ public class ClientService {
     @Autowired
     IPersonRepository personRepository;
 
-    public List<ClientResponse> getAllClients(){
-        List<ClientResponse> clients=new ArrayList<ClientResponse>();
+    public List<ClientVO> getAllClients(){
+        List<ClientVO> clients=new ArrayList<ClientVO>();
         List<Client> clientList= clientRepository.findAll();
         clientList.forEach(i -> {
-            ClientResponse client=new ClientResponse();
+            ClientVO client=new ClientVO();
             client.setAddress(i.getPerson().getAddress());
             client.setAge(i.getPerson().getAge());
             client.setGenre(i.getPerson().getGenre());
             client.setIdNumber(i.getPerson().getId());
             client.setName(i.getPerson().getName());
             client.setPhoneNumber(i.getPerson().getPhoneNumber());
-            client.setState(i.getState()==1);
+            client.setState(i.getState());
             clients.add(client);
         });
         return clients;
     }
 
-    public ClientResponse getClientByPersonId(Integer id){
+    public ClientVO getClientByPersonId(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
         Client clientDB= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
-        ClientResponse client=new ClientResponse();
+        ClientVO client=new ClientVO();
         client.setAddress(clientDB.getPerson().getAddress());
         client.setAge(clientDB.getPerson().getAge());
         client.setGenre(clientDB.getPerson().getGenre());
         client.setIdNumber(clientDB.getPerson().getId());
         client.setName(clientDB.getPerson().getName());
         client.setPhoneNumber(clientDB.getPerson().getPhoneNumber());
-        client.setState(clientDB.getState()==1);
+        client.setState(clientDB.getState());
         return client;
     }
 
     public void deleteClient(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
         Client client= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
-        client.setState(0);
+        client.setState(false);
         clientRepository.save(client);
     }
 
-    public void createClient(ClientRequest clientRequest){
+    public void createClient(ClientVO clientRequest){
         Client client= new Client();
         Person person= new Person();
         person.setAddress(clientRequest.getAddress());
@@ -69,13 +68,13 @@ public class ClientService {
         person.setName(clientRequest.getName());
         person.setPhoneNumber(clientRequest.getPhoneNumber());
         personRepository.save(person);
-        client.setState(clientRequest.isState()? 1 : 0);
+        client.setState(true);
         client.setPassword(clientRequest.getPassword());
         client.setPerson(person);
         clientRepository.save(client);
     }
 
-    public void updateClient(ClientRequest clientRequest){
+    public void updateClient(ClientVO clientRequest){
         List<Client> clientList= clientRepository.findByPersonId(clientRequest.getIdNumber());
         Client client= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
 
@@ -97,8 +96,7 @@ public class ClientService {
         Optional.ofNullable(clientRequest.getPassword())
                 .filter(password -> !password.trim().isEmpty())
                 .ifPresent(client::setPassword);
-
-        client.setState(clientRequest.isState()? 1 : 0);
+        client.setState(true);
 
         clientRepository.save(client);
     }
