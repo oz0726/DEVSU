@@ -5,6 +5,7 @@ import com.devsu.clientPerson.domain.entity.Person;
 import com.devsu.clientPerson.domain.repository.IClientRepository;
 import com.devsu.clientPerson.domain.repository.IPersonRepository;
 import com.devsu.clientPerson.infrastructure.vo.ClientVO;
+import com.devsu.clientPerson.util.exception.InfoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class ClientService {
 
     public ClientVO getClientByPersonId(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
-        Client clientDB= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
+        Client clientDB= clientList.stream().findFirst().orElseThrow(InfoNotFoundException::new);
         ClientVO client=new ClientVO();
         client.setAddress(clientDB.getPerson().getAddress());
         client.setAge(clientDB.getPerson().getAge());
@@ -53,7 +54,7 @@ public class ClientService {
 
     public void deleteClient(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
-        Client client= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
+        Client client= clientList.stream().findFirst().orElseThrow(InfoNotFoundException::new);
         client.setState(false);
         clientRepository.save(client);
     }
@@ -76,7 +77,7 @@ public class ClientService {
 
     public void updateClient(ClientVO clientRequest){
         List<Client> clientList= clientRepository.findByPersonId(clientRequest.getIdNumber());
-        Client client= clientList.stream().findFirst().orElseThrow(() -> new EntityNotFoundException("Error obteniendo información"));
+        Client client= clientList.stream().findFirst().orElseThrow(InfoNotFoundException::new);
 
         Optional.ofNullable(clientRequest.getAddress())
                 .filter(address -> !address.trim().isEmpty())

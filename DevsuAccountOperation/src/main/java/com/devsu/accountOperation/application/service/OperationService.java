@@ -5,6 +5,8 @@ import com.devsu.accountOperation.domain.repository.IAccountRepository;
 import com.devsu.accountOperation.domain.repository.IOperationRepository;
 import com.devsu.accountOperation.infraestructure.vo.OperationVO;
 import com.devsu.accountOperation.domain.entity.Operation;
+import com.devsu.accountOperation.util.exception.InfoNotFoundException;
+import com.devsu.accountOperation.util.exception.InvalidOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +42,7 @@ public class OperationService {
 
     public OperationVO getOperationById(Integer id){
         Optional<Operation> operationDB=operationRepository.findById(id);
-        if (operationDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
+        if (operationDB.isEmpty()) throw new InfoNotFoundException();
         OperationVO operation=new OperationVO();
         operation.setOperationId(operationDB.get().getOperationId());
         operation.setOperationDate(operationDB.get().getOperationDate());
@@ -52,10 +54,10 @@ public class OperationService {
         return operation;
     }
 
-    public void createOperation(OperationVO operationRequest){
+    public void createOperation(OperationVO operationRequest) {
         Operation operation= new Operation();
         Optional<Account> account= accountRepository.findById(operationRequest.getAccountNumber());
-        if (account.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
+        if (account.isEmpty()) throw new InfoNotFoundException();
 
         if(account.get().getInitialBalance() + operationRequest.getOperationValue()>=0){
             operation.setOperationDate(operationRequest.getOperationDate());
@@ -67,12 +69,12 @@ public class OperationService {
             accountRepository.save(account.get());
             operation.setAccount(account.get());
             operationRepository.save(operation);
-        } else throw new EntityNotFoundException("Saldo no disponible");
+        } else throw new InvalidOperationException();
     }
 
     public void cancelOperation(Integer id){
         Optional<Operation> operationDB=operationRepository.findById(id);
-        if (operationDB.isEmpty() || !operationDB.get().isState()) throw new EntityNotFoundException("Error obteniendo información");
+        if (operationDB.isEmpty() || !operationDB.get().isState()) throw new InfoNotFoundException();
         Operation rollback = new Operation();
         rollback.setOperationDate(new Date());
         rollback.setOperationType("Rollback "+operationDB.get().getOperationId());

@@ -1,10 +1,10 @@
-package com.devsu.accountOperation.util.exception;
+package com.devsu.clientPerson.util.exception;
 
-import com.devsu.accountOperation.util.rest.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import com.devsu.clientPerson.util.rest.Response;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -13,12 +13,6 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response<String>> handleInfoNotFoundException(InfoNotFoundException ex) {
         Response<String> response = new Response<>(HttpStatus.BAD_REQUEST.value(), "Error Obteniendo Datos");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    @ExceptionHandler(InvalidOperationException.class)
-    public ResponseEntity<Response<String>> handleInvalidOperationException(InfoNotFoundException ex) {
-        Response<String> response = new Response<>(HttpStatus.OK.value(), "El movimiento no se puede realizar");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @ExceptionHandler(Exception.class)

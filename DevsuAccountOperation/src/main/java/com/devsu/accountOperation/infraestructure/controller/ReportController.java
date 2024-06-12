@@ -7,7 +7,9 @@ import com.devsu.accountOperation.infraestructure.vo.AccountVO;
 import com.devsu.accountOperation.infraestructure.vo.ClientVO;
 import com.devsu.accountOperation.infraestructure.vo.OperationVO;
 import com.devsu.accountOperation.infraestructure.vo.ReportVO;
+import com.devsu.accountOperation.util.exception.InfoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,7 +35,7 @@ public class ReportController {
     }
 
     @GetMapping("/reportes")
-    public ReportVO getReport(@RequestParam int clientId, @RequestParam String startDate, @RequestParam String endDate) {
+    public ResponseEntity<?> getReport(@RequestParam int clientId, @RequestParam String startDate, @RequestParam String endDate) {
         ReportVO report = new ReportVO();
         List<AccountVO> accounts = new ArrayList<>();
         List<OperationVO> operations= new ArrayList<>();
@@ -47,7 +49,7 @@ public class ReportController {
             dStartDate = sdf.parse(startDate);
             dEndDate = sdf.parse(endDate);
         } catch (ParseException e) {
-            throw new RuntimeException("Error al parsear las fechas", e);
+            throw new InfoNotFoundException();
         }
 
         ClientVO client=clientREST.getClient(clientId);
@@ -59,6 +61,6 @@ public class ReportController {
         report.setAccounts(accounts);
         report.setOperations(operations);
         report.setClientName(client.getName());
-        return report;
+        return ResponseEntity.ok(report);
     }
 }
