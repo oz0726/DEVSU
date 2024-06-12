@@ -91,4 +91,21 @@ public class OperationService {
         cancelOperation(operationRequest.getOperationId());
         createOperation(operationRequest);
     }
+
+    public List<OperationVO> getOperationsByClientAndDate(int clientId, Date startDate, Date endDate){
+        List<OperationVO> operations= new ArrayList<>();
+        List<Operation> operationsDB= operationRepository.findByClientAndDate(clientId, startDate, endDate);
+        operationsDB.forEach(i -> {
+            OperationVO operation=new OperationVO();
+            operation.setOperationId(i.getOperationId());
+            operation.setOperationDate(i.getOperationDate());
+            operation.setOperationType(i.getOperationType());
+            operation.setOperationValue(i.getOperationValue());
+            operation.setNewBalance(i.getNewBalance());
+            operation.setState(i.isState());
+            operation.setAccountNumber(i.getAccount().getAccountNumber());
+            operations.add(operation);
+        });
+        return operations;
+    }
 }

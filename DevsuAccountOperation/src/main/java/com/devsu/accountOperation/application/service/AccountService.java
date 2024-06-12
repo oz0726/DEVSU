@@ -77,4 +77,19 @@ public class AccountService {
 
         repository.save(accountDB.get());
     }
+
+    public List<AccountVO> getAllAccountsByClientId(Integer id){
+        List<AccountVO> accountVOS = new ArrayList<>();
+        List<Account> accountsDB= repository.findByClientId(id);
+        accountsDB.forEach(i -> {
+            AccountVO accountVO =new AccountVO();
+            accountVO.setAccountNumber(i.getAccountNumber());
+            accountVO.setAccountType(i.getAccountType());
+            accountVO.setState(i.isState());
+            accountVO.setClientId(i.getClientId());
+            accountVO.setInitialBalance(i.getInitialBalance());
+            accountVOS.add(accountVO);
+        });
+        return accountVOS;
+    }
 }
