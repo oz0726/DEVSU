@@ -3,10 +3,10 @@ package com.devsu.accountOperation.application.service;
 import com.devsu.accountOperation.domain.repository.IAccountRepository;
 import com.devsu.accountOperation.infraestructure.vo.AccountVO;
 import com.devsu.accountOperation.domain.entity.Account;
+import com.devsu.accountOperation.util.exception.InfoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class AccountService {
 
     public AccountVO getAccountById(Integer id){
         Optional<Account> accountDB=repository.findById(id);
-        if (accountDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
+        if (accountDB.isEmpty()) throw new InfoNotFoundException();
         AccountVO accountVO =new AccountVO();
         accountVO.setAccountNumber(accountDB.get().getAccountNumber());
         accountVO.setAccountType(accountDB.get().getAccountType());
@@ -45,7 +45,7 @@ public class AccountService {
 
     public void deleteAccount(Integer id){
         Optional<Account> accountDB=repository.findById(id);
-        if (accountDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
+        if (accountDB.isEmpty()) throw new InfoNotFoundException();
         accountDB.get().setState(false);
         repository.save(accountDB.get());
     }
@@ -62,7 +62,7 @@ public class AccountService {
 
     public void updateAccount(AccountVO accountVORequest){
         Optional<Account> accountDB=repository.findById(accountVORequest.getAccountNumber());
-        if (accountDB.isEmpty()) throw new EntityNotFoundException("Error obteniendo información");
+        if (accountDB.isEmpty()) throw new InfoNotFoundException();
 
         Optional.ofNullable(accountVORequest.getAccountType())
                 .filter(accountType -> !accountType.trim().isEmpty())
