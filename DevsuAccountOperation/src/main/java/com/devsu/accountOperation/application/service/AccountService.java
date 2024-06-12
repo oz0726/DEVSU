@@ -58,7 +58,6 @@ public class AccountService {
         account.setClientId(accountVORequest.getClientId());
         account.setInitialBalance(accountVORequest.getInitialBalance());
         repository.save(account);
-        //TO DO validar si el cliente existe
     }
 
     public void updateAccount(AccountVO accountVORequest){
@@ -77,6 +76,5 @@ public class AccountService {
         accountDB.get().setState(true);
 
         repository.save(accountDB.get());
-        //TO DO validar si el cliente existe
     }
 }

@@ -1,7 +1,9 @@
 package com.devsu.accountOperation.infraestructure.controller;
 
 import com.devsu.accountOperation.application.service.AccountService;
+import com.devsu.accountOperation.infraestructure.rest.ClientREST;
 import com.devsu.accountOperation.infraestructure.vo.AccountVO;
+import com.devsu.accountOperation.infraestructure.vo.ClientVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,13 @@ import java.util.List;
 public class AccountController {
     @Autowired
     private AccountService service;
+
+    private final ClientREST clientREST;
+
+    public AccountController(ClientREST clientREST) {
+        this.clientREST = clientREST;
+    }
+
     @GetMapping("/cuentas")
     public List<AccountVO> getAllAccounts() throws IOException {
         return service.getAllAccounts();
@@ -27,6 +36,7 @@ public class AccountController {
     @ResponseBody
     public ResponseEntity<?> createAccount(@RequestBody AccountVO accountVORequest) throws IOException {
         service.createAccount(accountVORequest);
+        ClientVO client=clientREST.getClient(accountVORequest.getClientId());
         return ResponseEntity.ok("Entidad creada con éxito");
     }
 
@@ -34,6 +44,7 @@ public class AccountController {
     @ResponseBody
     public ResponseEntity<?> updateAccount(@RequestBody AccountVO accountVORequest) throws IOException {
         service.updateAccount(accountVORequest);
+        ClientVO client=clientREST.getClient(accountVORequest.getClientId());
         return ResponseEntity.ok("Entidad creada con éxito");
     }
 
