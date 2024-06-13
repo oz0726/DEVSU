@@ -3,7 +3,11 @@ package com.devsu.clientPerson.util.rest;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * Generic response object
+ *
+ * @author Olman Ibanez
+ */
 @Generated
 @Getter
 @Setter

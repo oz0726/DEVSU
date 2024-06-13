@@ -9,11 +9,14 @@ import com.devsu.clientPerson.util.exception.InfoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Class with business logic of the application
+ *
+ * @author Olman Ibanez
+ */
 @Service
 public class ClientService {
     @Autowired
@@ -37,7 +40,11 @@ public class ClientService {
         });
         return clients;
     }
-
+    /**
+     * This method queries that a user with the indicated id exists in the PERSON table and then looks for the clients that match
+     *
+     * @author Olman Ibanez
+     */
     public ClientVO getClientByPersonId(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
         Client clientDB= clientList.stream().findFirst().orElseThrow(InfoNotFoundException::new);

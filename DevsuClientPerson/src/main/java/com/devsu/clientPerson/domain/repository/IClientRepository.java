@@ -7,7 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
+/**
+ * JPA Connection Repository
+ *
+ * @author Olman Ibanez
+ */
 public interface IClientRepository extends JpaRepository<Client, Integer> {
     @Query("SELECT c FROM Client c WHERE c.person.id = :id")
     public List<Client> findByPersonId(@Param("id") Integer id);
