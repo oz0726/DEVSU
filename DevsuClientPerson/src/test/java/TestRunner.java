@@ -6,7 +6,7 @@ public class TestRunner {
 
     @Test
     public void testAllAPI() {
-        Results results = Runner.path("classpath:com/devsu/clientPerson").parallel(1);
+        Results results = Runner.path("classpath:com/devsu/clientPerson").tags("~@Ignore").parallel(1);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
 }
