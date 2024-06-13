@@ -1,4 +1,15 @@
 # DEVSU - Prueba técnica
+### Tecnología utilizada
+1. Java 17
+2. MVN 4
+3. Springboot 2.6
+4. Loombok 1.18
+5. DB H2
+6. Springdoc-openapi para swagger y documentación
+7. Log4j 2.23
+8. Karate 1.1.0 y Junit 4 para test unitarios
+9. Docker engine para despliegue de contenedores
+
 ### Requisitos
 1. Java instalado en la maquina
 2. Maven Instalado en la maquina
