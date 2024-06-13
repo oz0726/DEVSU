@@ -58,7 +58,7 @@ public class OperationController {
 
     @Operation(summary = "Create a operation")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation",
+            @ApiResponse(responseCode = "201", description = "successful operation",
                     content = @Content(schema = @Schema(implementation = Response.class))),
             @ApiResponse(responseCode = "400", description = "bad request",
                     content = @Content(schema = @Schema(implementation = Response.class))),
@@ -68,8 +68,8 @@ public class OperationController {
     @ResponseBody
     public ResponseEntity<?> createOperation(@RequestBody OperationVO operationRequest) throws InvalidOperationException, InfoNotFoundException {
         service.createOperation(operationRequest);
-        Response<String> response = new Response<>(HttpStatus.OK.value(), "Entidad creada con éxito");
-        return ResponseEntity.ok(response);
+        Response<String> response = new Response<>(HttpStatus.CREATED.value(), "Entidad creada con éxito");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Update a operation")
@@ -90,7 +90,7 @@ public class OperationController {
 
     @Operation(summary = "Delete a operation")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation",
+            @ApiResponse(responseCode = "204", description = "successful operation",
                     content = @Content(schema = @Schema(implementation = Response.class))),
             @ApiResponse(responseCode = "400", description = "bad request",
                     content = @Content(schema = @Schema(implementation = Response.class))),
@@ -99,7 +99,7 @@ public class OperationController {
     @DeleteMapping("/movimientos/{id}")
     public ResponseEntity<?> cancelOperation(@PathVariable Integer id) throws InfoNotFoundException {
         service.cancelOperation(id);
-        Response<String> response = new Response<>(HttpStatus.OK.value(), "Entidad eliminada con éxito");
-        return ResponseEntity.ok(response);
+        Response<String> response = new Response<>(HttpStatus.NO_CONTENT.value(), "Entidad eliminada con éxito");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 }

@@ -63,7 +63,7 @@ public class AccountController {
 
     @Operation(summary = "Create a account")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation",
+            @ApiResponse(responseCode = "201", description = "successful operation",
                     content = @Content(schema = @Schema(implementation = Response.class))),
             @ApiResponse(responseCode = "400", description = "bad request",
                     content = @Content(schema = @Schema(implementation = Response.class))),
@@ -74,8 +74,8 @@ public class AccountController {
     public ResponseEntity<?> createAccount(@RequestBody AccountVO accountVORequest) throws InfoNotFoundException {
         clientREST.getClient(accountVORequest.getClientId());
         service.createAccount(accountVORequest);
-        Response<String> response = new Response<>(HttpStatus.OK.value(), "Entidad creada con éxito");
-        return ResponseEntity.ok(response);
+        Response<String> response = new Response<>(HttpStatus.CREATED.value(), "Entidad creada con éxito");
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Operation(summary = "Update a account")
@@ -97,7 +97,7 @@ public class AccountController {
 
     @Operation(summary = "Delete a account")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "successful operation",
+            @ApiResponse(responseCode = "204", description = "successful operation",
                     content = @Content(schema = @Schema(implementation = Response.class))),
             @ApiResponse(responseCode = "400", description = "bad request",
                     content = @Content(schema = @Schema(implementation = Response.class))),
@@ -106,7 +106,7 @@ public class AccountController {
     @DeleteMapping("/cuentas/{id}")
     public ResponseEntity<?> deleteAccount(@PathVariable Integer id) throws InfoNotFoundException {
         service.deleteAccount(id);
-        Response<String> response = new Response<>(HttpStatus.OK.value(), "Entidad eliminada con éxito");
-        return ResponseEntity.ok(response);
+        Response<String> response = new Response<>(HttpStatus.NO_CONTENT.value(), "Entidad eliminada con éxito");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 }
