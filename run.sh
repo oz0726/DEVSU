@@ -15,6 +15,6 @@ mvn install -DskipTests
 echo "Finishing Compiling Java sources..."
 echo "Building DevsuAccountOperation container, port 8081..."
 docker build -t devsu-account-operation-docker:latest .
-docker run -d --name devsu-account-operation -p 8081:8081 devsu-account-operation-docker:latest .
+docker run -d --link devsu-client-person:devsu-client-person --name devsu-account-operation -p 8081:8081 devsu-account-operation-docker:latest .
 echo "Finishing container set up, 8081 port..."
 cd ..
