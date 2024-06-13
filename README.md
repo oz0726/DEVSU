@@ -25,4 +25,7 @@
 
 [clientPerson.json](https://github.com/oz0726/DEVSU/blob/feature/integration/Docs/clientPerson.json)
 
+### Swagger UI:
+[clientPerson](http://localhost:8080/swagger-ui/index.html#/)
 
+[AccountOperation](http://localhost:8081/swagger-ui/index.html#/)
