@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.devsu.clientPerson.util.rest.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+/**
+ * Custom Global exception handler
+ *
+ * @author Olman Ibanez
+ */
 @ControllerAdvice
 public class GlobalExceptionHandler {
     Logger log = LogManager.getLogger(GlobalExceptionHandler.class);

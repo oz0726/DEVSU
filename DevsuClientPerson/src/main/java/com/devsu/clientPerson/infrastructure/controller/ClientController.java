@@ -22,7 +22,7 @@ import java.io.IOException;
 
 @RestController
 @OpenAPIDefinition(servers = { @Server(url = "http://localhost:8080") },
-        info = @Info(title = "Devsu Client Person API", version = "v1",
+        info = @Info(title = "Devsu Client API", version = "v1",
                 description = "A project using Spring Boot with Swagger-UI enabled",
                 contact = @Contact(url = "https://www.linkedin.com/in/olman-ibanez/", name = "Olman Ibañez")))
 public class ClientController {

@@ -8,7 +8,11 @@ import javax.persistence.Table;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
-
+/**
+ * JPA Entity Mapping Object
+ *
+ * @author Olman Ibanez
+ */
 @Entity
 @Table(name = "PERSON")
 @Generated

@@ -58,7 +58,10 @@ public class ClientService {
         client.setState(clientDB.getState());
         return client;
     }
-
+    /**
+     * Logical deletion of the client
+     *  @author Olman Ibanez
+     */
     public void deleteClient(Integer id){
         List<Client> clientList= clientRepository.findByPersonId(id);
         Client client= clientList.stream().findFirst().orElseThrow(InfoNotFoundException::new);
