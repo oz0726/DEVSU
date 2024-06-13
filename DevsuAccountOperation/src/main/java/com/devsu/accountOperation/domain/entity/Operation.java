@@ -6,7 +6,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
-
+/**
+ * JPA Entity Mapping Object
+ *
+ * @author Olman Ibanez
+ */
 @Entity
 @Table(name = "OPERATION")
 @Generated

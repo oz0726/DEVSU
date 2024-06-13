@@ -10,12 +10,15 @@ import com.devsu.accountOperation.util.exception.InvalidOperationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * Class with business logic of the application
+ *
+ * @author Olman Ibanez
+ */
 @Service
 public class OperationService {
     @Autowired
@@ -72,6 +75,10 @@ public class OperationService {
         } else throw new InvalidOperationException();
     }
 
+    /**
+     * A logical deletion of the operation is performed and a rollback of it is generated.
+     *  @author Olman Ibanez
+     */
     public void cancelOperation(Integer id){
         Optional<Operation> operationDB=operationRepository.findById(id);
         if (operationDB.isEmpty() || !operationDB.get().isState()) throw new InfoNotFoundException();
@@ -89,6 +96,10 @@ public class OperationService {
         operationRepository.save(operationDB.get());
     }
 
+    /**
+     * A logical deletion of the operation is performed, a rollback of it is generated and is created a new one with the updated info.
+     *  @author Olman Ibanez
+     */
     public void updateOperation(OperationVO operationRequest){
         cancelOperation(operationRequest.getOperationId());
         createOperation(operationRequest);

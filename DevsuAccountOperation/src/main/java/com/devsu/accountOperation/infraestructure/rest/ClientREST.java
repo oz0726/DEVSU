@@ -4,7 +4,11 @@ import com.devsu.accountOperation.infraestructure.vo.ClientVO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.beans.factory.annotation.Value;
-
+/**
+ * REST client for the client/person API
+ *
+ * @author Olman Ibanez
+ */
 @Service
 public class ClientREST {
 

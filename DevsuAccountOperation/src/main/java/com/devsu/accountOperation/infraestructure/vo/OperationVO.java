@@ -3,18 +3,15 @@ package com.devsu.accountOperation.infraestructure.vo;
 import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Date;
-
-
-@Generated
-@Getter
-@Setter
 /**
- * Objeto de mapeo para comunicación API REST
+ * Mapping object for REST API communication
  *
  * @author Olman Ibanez
  */
+@Generated
+@Getter
+@Setter
 public class OperationVO {
     private int operationId;
     private Date operationDate;

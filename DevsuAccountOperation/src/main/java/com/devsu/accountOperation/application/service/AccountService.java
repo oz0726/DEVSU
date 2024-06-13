@@ -6,11 +6,15 @@ import com.devsu.accountOperation.domain.entity.Account;
 import com.devsu.accountOperation.util.exception.InfoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class with business logic of the application
+ *
+ * @author Olman Ibanez
+ */
 @Service
 public class AccountService {
     @Autowired
@@ -42,14 +46,21 @@ public class AccountService {
         accountVO.setInitialBalance(accountDB.get().getInitialBalance());
         return accountVO;
     }
-
+    /**
+     * Logical deletion of the account
+     *  @author Olman Ibanez
+     */
     public void deleteAccount(Integer id){
         Optional<Account> accountDB=repository.findById(id);
         if (accountDB.isEmpty()) throw new InfoNotFoundException();
         accountDB.get().setState(false);
         repository.save(accountDB.get());
     }
-
+    /**
+     * This method is executed after validation of the existence of the client by the REST controller
+     *
+     * @author Olman Ibanez
+     */
     public void createAccount(AccountVO accountVORequest){
         Account account= new Account();
         account.setAccountNumber(accountVORequest.getAccountNumber());
@@ -59,7 +70,11 @@ public class AccountService {
         account.setInitialBalance(accountVORequest.getInitialBalance());
         repository.save(account);
     }
-
+    /**
+     * This method is executed after validation of the existence of the client by the REST controller
+     *
+     * @author Olman Ibanez
+     */
     public void updateAccount(AccountVO accountVORequest){
         Optional<Account> accountDB=repository.findById(accountVORequest.getAccountNumber());
         if (accountDB.isEmpty()) throw new InfoNotFoundException();
